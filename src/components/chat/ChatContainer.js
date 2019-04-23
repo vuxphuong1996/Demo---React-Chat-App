@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { COMMUNITY_CHAT, MESSAGE_RECIEVED, TYPING, MESSAGE_SENT } from '../../Constant'
+import { COMMUNITY_CHAT, MESSAGE_RECIEVED, TYPING, MESSAGE_SENT, LOGOUT } from '../../Constant'
 import SideBar from './SideBar'
 import ChatHeading from './ChatHeading'
 import Messages from '../message/Messages'
@@ -114,10 +114,9 @@ export class ChatContainer extends Component {
         this.setState({ activeChat })
     }
 
-
     render() {
         const { chats, activeChat } = this.state
-        const { user, socket } = this.props
+        const { user, socket, logout } = this.props
 
         return (
             <div className="wrapperChat">
@@ -126,6 +125,7 @@ export class ChatContainer extends Component {
                     user={user}
                     activeChat={activeChat}
                     setActiveChat={this.setActiveChat}
+                    logout={logout}
                 />
 
                 {

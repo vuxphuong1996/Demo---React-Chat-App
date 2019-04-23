@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ChatContainer from './chat/ChatContainer'
 import io from 'socket.io-client'
 import LoginForm from './LoginForm'
-import {USER_CONNECTED} from '../Constant'
+import {USER_CONNECTED, LOGOUT} from '../Constant'
 
 const socketUrl = "192.168.1.3:3231"
 
@@ -32,6 +32,12 @@ export class Layout extends Component {
     socket.emit(USER_CONNECTED, user)
   }
 
+  logOut = (userName) => {
+    const { socket } = this.state
+    socket.emit(LOGOUT, userName)
+    this.setState({user: null})
+}
+
   render() {
     const {user, socket} = this.state
     return (
@@ -39,7 +45,7 @@ export class Layout extends Component {
         {
             !user
             ? <LoginForm socket={socket} setUser={this.setUser}/>
-            : <ChatContainer socket={socket} user={user}/>
+            : <ChatContainer socket={socket} user={user} logout={this.logOut}/>
         }
       </div>
     )

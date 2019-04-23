@@ -1,5 +1,5 @@
 const io = require('./index.js').io
-const {VERIFY_USER, USER_CONNECTED, MESSAGE_SENT, COMMUNITY_CHAT, TYPING, MESSAGE_RECIEVED} = require('../Constant')
+const {VERIFY_USER, USER_CONNECTED, MESSAGE_SENT, COMMUNITY_CHAT, TYPING, MESSAGE_RECIEVED, LOGOUT} = require('../Constant')
 const { createUser, createChat, createMessage } = require('../Fatories')
 
 let connectedUser = { };
@@ -18,6 +18,11 @@ module.exports = (socket) => {
         }else {
             callback({ user: createUser({name: nickName}), isUser: false})
         }
+    })
+
+    // User logout
+    socket.on(LOGOUT, (userName) => {
+        connectedUser = removeUser(userName)
     })
     //userName Object
     //user connect
@@ -73,14 +78,21 @@ sendMessageToChat = (sender) => {
 }
 
 
-//them user
+//Add user
 const addUser = (connectedUser, userName) => {
     const newList = Object.assign({}, connectedUser)
     newList[userName.name] = userName
     return newList
 }
 
-// kiem tra user co trong danh sach khong
+//Remove user
+const removeUser = (connectedUser, userName) => {
+    const newList = Object.assign({}, connectedUser)
+    delete newList[userName]
+    return newList
+}
+//thu nghiem lai
+// Verify userName in Object userList
 const isUser = (userList, userName) => {
     return userName in userList
 }
